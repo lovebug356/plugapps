@@ -1,0 +1,47 @@
+# $Id: PKGBUILD 99973 2010-11-19 16:47:05Z heftig $
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgbase=gstreamer0.10-good
+pkgname=('gstreamer0.10-good' 'gstreamer0.10-good-plugins')
+pkgver=0.10.25
+pkgrel=2
+arch=('arm')
+license=('LGPL')
+makedepends=('pkgconfig' 'gstreamer0.10-base' 'flac' 'wavpack' 'taglib' 'bzip2')
+url="http://gstreamer.freedesktop.org/"
+options=(!libtool !emptydirs)
+source=(${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.bz2)
+sha256sums=('b5d5750c12412c47d85ba9391c842f6f02cad9511876695e48b15fb37e4699f6')
+
+build() {
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static --enable-experimental \
+    --disable-schemas-install \
+    --disable-hal \
+    --with-package-name="GStreamer Good Plugins (PlugApps)" \
+    --with-package-origin="http://www.plugapps.org/"
+
+  make
+  sed -e 's/gst sys ext/gst/' -i Makefile
+}
+
+package_gstreamer0.10-good() {
+  depends=('gstreamer0.10-base>=0.10.30' 'bzip2')
+  pkgdesc="GStreamer Multimedia Framework Good plugin libraries"
+  conflicts=('gstreamer0.10-bad<=0.10.17')
+
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}/etc/gconf"
+}
+
+package_gstreamer0.10-good-plugins() {
+  depends=("gstreamer0.10-good=${pkgver}" 'wavpack' 'taglib' 'libpng' 'libjpeg')
+  pkgdesc="GStreamer Multimedia Framework Good Plugins (gst-plugins-good)"
+  groups=('gstreamer0.10-plugins')
+
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+  make -C sys DESTDIR="${pkgdir}" install || return 1
+  make -C ext GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+}
