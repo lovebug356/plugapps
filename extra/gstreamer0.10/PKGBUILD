@@ -1,0 +1,30 @@
+# $Id: PKGBUILD 87764 2010-08-18 09:05:27Z jgc $
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgname=gstreamer0.10
+pkgver=0.10.30
+pkgrel=1
+pkgdesc="GStreamer Multimedia Framework"
+arch=('arm')
+license=('LGPL')
+url="http://gstreamer.freedesktop.org/"
+depends=('libxml2>=2.7.7' 'glib2>=2.24.1')
+makedepends=('pkgconfig')
+options=('!libtool')
+source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.bz2)
+sha256sums=('e8ef301be423797ff36a0bb3615930b112b4175634051d19fd655e0ed974532a')
+
+build() {
+  cd "${srcdir}/gstreamer-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib \
+    --with-package-name="GStreamer (PlugApps)" \
+    --with-package-origin="http://www.plugapps.org/"
+  make
+  make DESTDIR="${pkgdir}" install
+  cd "${pkgdir}/usr/bin"
+
+  #Remove unversioned gst-* binaries to get rid of conflicts
+  for bins in `ls *-0.10`; do
+    rm -f ${bins/-0.10/}
+  done
+}
