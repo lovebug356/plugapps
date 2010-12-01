@@ -1,0 +1,46 @@
+# $Id: PKGBUILD 100239 2010-11-22 10:07:06Z jgc $
+# Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgbase=gstreamer0.10-bad
+pkgname=('gstreamer0.10-bad' 'gstreamer0.10-bad-plugins')
+pkgver=0.10.20
+pkgrel=1
+arch=('arm')
+license=('LGPL' 'GPL')
+makedepends=('pkgconfig' 'gstreamer0.10-base>=0.10.30' 'xvidcore' 'bzip2' 'faac' 'libexif' 'musicbrainz' 'faad2' 'libmms' 'libcdaudio' 'schroedinger' 'libvpx' 'rtmpdump')
+url="http://gstreamer.freedesktop.org/"
+options=(!libtool !emptydirs)
+source=(${url}/src/gst-plugins-bad/gst-plugins-bad-${pkgver}.tar.bz2)
+md5sums=('7c84766f6d24f41ba90c3f6141012ab8')
+
+build() {
+  cd "${srcdir}/gst-plugins-bad-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static --enable-experimental \
+    --with-package-name="GStreamer Bad Plugins (Archlinux)" \
+    --with-package-origin="http://www.archlinux.org/" || return 1
+
+  make || return 1
+  sed -e 's/gst sys ext/gst/' -i Makefile
+}
+
+package_gstreamer0.10-bad() {
+  pkgdesc="GStreamer Multimedia Framework Bad Plugin libraries (gst-plugins-bad)"
+  depends=('gstreamer0.10-base>=0.10.29')
+  groups=('gstreamer0.10-plugins')
+
+  cd "${srcdir}/gst-plugins-bad-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+
+package_gstreamer0.10-bad-plugins() {
+  pkgdesc="GStreamer Multimedia Framework Bad Plugins (gst-plugins-bad)"
+  depends=("gstreamer0.10-bad=${pkgver}" 'xvidcore' 'bzip2' 'faac' 'libexif' 'musicbrainz' 'faad2' 'libmms' 'libcdaudio' 'soundtouch' 'schroedinger' 'libvpx' 'rtmpdump')
+  groups=('gstreamer0.10-plugins')
+
+  cd "${srcdir}/gst-plugins-bad-${pkgver}"
+  make -C gst-libs DESTDIR="${pkgdir}" install
+  make -C ext DESTDIR="${pkgdir}" install
+  make -C sys DESTDIR="${pkgdir}" install
+  make -C gst-libs DESTDIR="${pkgdir}" uninstall
+}
