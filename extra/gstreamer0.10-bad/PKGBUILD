@@ -35,7 +35,7 @@ package_gstreamer0.10-bad() {
 
 package_gstreamer0.10-bad-plugins() {
   pkgdesc="GStreamer Multimedia Framework Bad Plugins (gst-plugins-bad)"
-  depends=("gstreamer0.10-bad=${pkgver}" 'xvidcore' 'bzip2' 'faac' 'libexif' 'musicbrainz' 'faad2' 'libmms' 'libcdaudio' 'soundtouch' 'schroedinger' 'libvpx' 'rtmpdump')
+  depends=("gstreamer0.10-bad=${pkgver}" 'xvidcore' 'bzip2' 'faac' 'libexif' 'musicbrainz' 'faad2' 'libmms' 'libcdaudio' 'schroedinger' 'libvpx' 'rtmpdump')
   groups=('gstreamer0.10-plugins')
 
   cd "${srcdir}/gst-plugins-bad-${pkgver}"
