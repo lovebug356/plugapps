@@ -3,7 +3,7 @@
 
 pkgbase=gstreamer0.10-good
 pkgname=('gstreamer0.10-good' 'gstreamer0.10-good-plugins')
-pkgver=0.10.25
+pkgver=0.10.26
 pkgrel=2
 arch=('arm')
 license=('LGPL')
@@ -11,7 +11,6 @@ makedepends=('pkgconfig' 'gstreamer0.10-base' 'flac' 'wavpack' 'taglib' 'bzip2' 
 url="http://gstreamer.freedesktop.org/"
 options=(!libtool !emptydirs)
 source=(${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.bz2)
-sha256sums=('b5d5750c12412c47d85ba9391c842f6f02cad9511876695e48b15fb37e4699f6')
 
 build() {
   cd "${srcdir}/gst-plugins-good-${pkgver}"
@@ -45,3 +44,4 @@ package_gstreamer0.10-good-plugins() {
   make -C sys DESTDIR="${pkgdir}" install || return 1
   make -C ext GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
 }
+md5sums=('e1ed191adbf81edff04f348f8ce8e198')
