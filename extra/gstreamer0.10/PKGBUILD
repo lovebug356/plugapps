@@ -2,7 +2,7 @@
 # Maintainer: Jan de Groot <jgc@archlinux.org>
 
 pkgname=gstreamer0.10
-pkgver=0.10.30
+pkgver=0.10.31
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('arm')
@@ -12,7 +12,6 @@ depends=('libxml2>=2.7.7' 'glib2>=2.24.1')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.bz2)
-sha256sums=('e8ef301be423797ff36a0bb3615930b112b4175634051d19fd655e0ed974532a')
 
 build() {
   cd "${srcdir}/gstreamer-${pkgver}"
@@ -28,3 +27,4 @@ build() {
     rm -f ${bins/-0.10/}
   done
 }
+md5sums=('a21fb08bdb578d972c7c14e77da8fbb6')
