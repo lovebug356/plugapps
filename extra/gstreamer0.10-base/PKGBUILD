@@ -3,7 +3,7 @@
 
 pkgbase=('gstreamer0.10-base')
 pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
-pkgver=0.10.30
+pkgver=0.10.31
 pkgrel=1
 arch=('arm')
 license=('LGPL')
@@ -11,7 +11,6 @@ makedepends=('pkgconfig' 'gstreamer0.10>=0.10.30' 'orc>=0.4.6' 'alsa-lib>=1.0.23
 options=(!libtool !emptydirs)
 url="http://gstreamer.freedesktop.org/"
 source=(${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.bz2)
-sha256sums=('63938641380be9935c804ae8d55acdcfd93920ed2deb72dcf70f027a78b085d7')
 
 build() {
   cd "${srcdir}/gst-plugins-base-${pkgver}"
@@ -44,3 +43,4 @@ package_gstreamer0.10-base-plugins() {
   make -C ext DESTDIR="${pkgdir}" install || return 1
   make -C gst-libs DESTDIR="${pkgdir}" uninstall || return 1
 }
+md5sums=('9baa0d87e81c88b2477a3554ab629c46')
